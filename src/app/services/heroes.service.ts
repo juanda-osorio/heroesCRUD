@@ -17,7 +17,8 @@ export class HeroesService {
   crearHeroe(heroe: HeroeModel){
     return this.http.post(`${this.url}/heroes.json`, heroe)
       .pipe(
-        /* se coloca (resp: any) para que acepte el resp.name; si no, no lo reconoce */
+        /* se coloca (resp: any) para que acepte el resp.name; si no, no lo reconoce
+         * Firebase le llama 'name' al id que viene en la respuesta. */
         map( (resp: any) =>{
           heroe.id = resp.name;
           return heroe;
