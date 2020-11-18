@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { HeroeModel } from './../models/heroe.model';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +25,8 @@ export class HeroesService {
       );
   }
 
-  actualizarHeroe(heroe: HeroeModel){
-    
+
+  actualizarHeroe(heroe: HeroeModel){    
     /* ...heroe ===> Crea un objeto de acuerdo a las propiedades definidas en el modelo */
     const heroeTemp = {
       ...heroe
@@ -38,18 +38,25 @@ export class HeroesService {
     return this.http.put(`${this.url}/heroes/${heroe.id}.json`, heroeTemp);
   }
 
+
+
   getHeroes(){
     return this.http.get(`${ this.url }/heroes.json`)
       .pipe(
-        /* el map tal y como está, le está mandando como parametro la respuesta.
+        /* el map tal y como está, le está mandando como PARAMETRO la respuesta.
         Esta es una version mas corta. 
         De la forma larga funcionaría igualmente */
-        map( this.crearArray )
+        map( this.crearArray ),
+        delay(1500)
       )
   }
 
+
+
   /* Tuvimos que crear esta función porque los objetos no son iterables en un ngFor.
-  Esta función transforma los objetos en un array. */
+   * Esta función transforma los objetos en un array.
+   * Lo que llega por parametro, son los heroes version Objeto, que es la respuesta
+   * del map. */
   private crearArray(heroesObj: object){
 
     const heroesArray: HeroeModel[] = [];
@@ -60,13 +67,20 @@ export class HeroesService {
       const heroe: HeroeModel = heroesObj[key];
       heroe.id = key;
       heroesArray.push( heroe );
-    })
-
+    });
+    // console.log(heroesArray);
     return heroesArray;
   }
 
+  
+
   getHeroe(id: string){
     return this.http.get(`${ this.url }/heroes/${ id }.json`);
+  }
+
+
+  deleteHeroe(id: string){
+    return this.http.delete(`${ this.url }/heroes/${ id }.json`);
   }
 
 }

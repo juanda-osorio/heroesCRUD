@@ -21,16 +21,17 @@ export class HeroeComponent implements OnInit {
               private route: ActivatedRoute ) { }
   
   ngOnInit(): void {
-    /* Esta es otra manera de obtener datos sin necesidad de 'suscribirnos'
-    NO LA ENTIENDO MUCHO. Creo que coge de la url el ultimo parametro. */
+    /* Esta es otra manera de obtener datos sin necesidad de 'suscribirnos'.
+     * Creo que coge de la url el ultimo parametro. Ya sea el 'id' o 'nuevo' */
     const id = this.route.snapshot.paramMap.get('id');
+
+    console.log(id);
 
     if (id !== 'nuevo') {
       this._heroesService.getHeroe( id )
         .subscribe((resp: HeroeModel) =>{
           this.heroe = resp;
           this.heroe.id = id;
-          console.log(this.heroe);
         });
     }
   }

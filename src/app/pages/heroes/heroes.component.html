@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<table class="table mt-3 animate__animated animate__fadeIn animate__fast">
+<table *ngIf="!cargando && arrayHeroes.length > 0" class="table mt-3 animate__animated animate__backInUp animate__faster">
     <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -32,21 +32,21 @@
                 <label *ngIf="!h.vivo" class="badge badge-danger">Muerto</label>
             </td>
             <td>
-                <button class="btn btn-primary mr-1" [routerLink]="['/heroe', h.id]"> <i class="fa fa-pencil"></i> </button>
-                <button class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
+                <button alt="Editar" title="Editar" class="btn btn-primary mr-1" [routerLink]="['/heroe', h.id]"> <i class="fa fa-pencil"></i> </button>
+                <button alt="Borrar" title="Borrar" class="btn btn-danger" (click)="borraHeroe(h, i)"> <i class="fa fa-trash"></i> </button>
             </td>
         </tr>
     </tbody>
 </table>
 
-<div class="alert alert-warning text-center mt-3">
+<div *ngIf="!cargando && arrayHeroes.length === 0" class="alert alert-warning text-center mt-3 animate__animated animate__fadeIn animate__faster">
     <h4 class="alert-heading"> No hay registros </h4>
     <p>
         <i class="fa fa-exclamation fa-2x"></i>
     </p>
 </div>
 
-<div class="alert alert-info text-center mt-3">
+<div *ngIf="cargando" class="alert alert-info text-center mt-3 animate__animated animate__fadeIn animate__slower">
     <h4 class="alert-heading"> Cargando </h4>
     <p>
         <i class="fa fa-refresh fa-spin fa-2x"></i>
